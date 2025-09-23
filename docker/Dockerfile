@@ -1,6 +1,12 @@
 FROM osrf/ros:humble-desktop
 ENV ROS_DISTRO=humble
 
+# Get the latest ROS GPG key
+RUN rm -f /etc/apt/sources.list.d/ros2-latest.list && \
+    apt-get update && apt-get install -y curl gnupg lsb-release && \
+    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -59,6 +65,13 @@ RUN pip3 install --no-cache-dir --upgrade pip \
 
 WORKDIR /ros2_ws
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
+## For convenience:
+RUN echo "alias kk='clear'" >> /root/.bashrc
+RUN echo "alias tt='tmux new'" >> /root/.bashrc
+RUN echo "alias roskb='ros2 run teleop_twist_keyboard teleop_twist_keyboard'" >> /root/.bashrc
+# Save the bash history immediately on each execution
+RUN echo "export PROMPT_COMMAND='history -a' " >> "/root/.bashrc"
+RUN echo "export HISTFILE=/commandhistory/.bash_history" >> "/root/.bashrc"
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]

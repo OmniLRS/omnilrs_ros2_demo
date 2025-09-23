@@ -15,6 +15,7 @@ DOCKER_RUN_CMD="docker run -it --rm --privileged \
                 -v /dev/:/dev/ \
                 -v $PWD/docker:/docker \
                 -v $PWD/humble_ws:/ros2_ws \
+                -v omnilrs_ros2_demo_cmd:/commandhistory \
                 --network=host \
                 --ipc=host \
                 --name $NAME \
