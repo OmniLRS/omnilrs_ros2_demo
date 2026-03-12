@@ -44,7 +44,8 @@ RUN apt-get update && apt-get install -y \
 ros-${ROS_DISTRO}-navigation2 \
 ros-${ROS_DISTRO}-nav2-bringup \
 ros-${ROS_DISTRO}-slam-toolbox \
-ros-${ROS_DISTRO}-spatio-temporal-voxel-layer
+ros-${ROS_DISTRO}-spatio-temporal-voxel-layer \
+ros-${ROS_DISTRO}-ackermann-msgs
 
 # Install foxglove bridge
 RUN apt install -y ros-$ROS_DISTRO-foxglove-bridge
